@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { CopyButton } from 'src/components/CopyButton';
 import { DocumentPreview } from 'src/components/DocumentPreview';
@@ -27,9 +27,15 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
   const [values, setValues] = useState<FieldValues>(() =>
     getDefaultValues(template.fields),
   );
+  const formRef = useRef<HTMLFormElement>(null);
 
   function handleChange(name: string, value: boolean | string) {
     setValues((previous) => ({ ...previous, [name]: value }));
+  }
+
+  function validate() {
+    /* v8 ignore next -- @preserve: formRef is always attached once mounted */
+    return formRef.current?.reportValidity() ?? true;
   }
 
   const interpolatedMarkdown = interpolate(template.markdown, values);
@@ -48,6 +54,7 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
       <FormPreviewLayout
         form={
           <TemplateForm
+            ref={formRef}
             fields={template.fields}
             onChange={handleChange}
             values={values}
@@ -60,14 +67,17 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
               <CopyButton
                 getText={() => markdownToPlainText(interpolatedMarkdown)}
                 label="Copy as Plain Text"
+                validate={validate}
               />
               <CopyButton
                 getText={() => interpolatedMarkdown}
                 label="Copy as Markdown"
+                validate={validate}
               />
               <CopyButton
                 getText={() => markdownToHtml(interpolatedMarkdown)}
                 label="Copy as HTML"
+                validate={validate}
               />
             </div>
           </div>

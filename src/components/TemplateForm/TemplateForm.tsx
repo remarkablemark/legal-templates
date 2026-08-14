@@ -1,4 +1,3 @@
-import type { ChangeEvent } from 'react';
 import type { Field, FieldValues } from 'src/types/template.types';
 
 const inputClassName =
@@ -8,11 +7,17 @@ export interface TemplateFormProps {
   fields: Field[];
   values: FieldValues;
   onChange: (name: string, value: boolean | string) => void;
+  ref?: React.Ref<HTMLFormElement>;
 }
 
-export function TemplateForm({ fields, values, onChange }: TemplateFormProps) {
+export function TemplateForm({
+  fields,
+  values,
+  onChange,
+  ref,
+}: TemplateFormProps) {
   function handleChange(field: Field) {
-    return (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    return (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const value =
         field.type === 'checkbox' && event.target instanceof HTMLInputElement
           ? event.target.checked
@@ -23,7 +28,11 @@ export function TemplateForm({ fields, values, onChange }: TemplateFormProps) {
   }
 
   return (
-    <form className="flex flex-col gap-4" aria-label="Document details">
+    <form
+      ref={ref}
+      className="flex flex-col gap-4"
+      aria-label="Document details"
+    >
       {fields.map((field, index) => {
         const autoFocus = index === 0;
 

@@ -47,7 +47,7 @@ describe('TemplatePage', () => {
   });
 
   it.each(['Copy as Plain Text', 'Copy as Markdown', 'Copy as HTML'] as const)(
-    'copies the output when "%s" is clicked',
+    'copies the output when "%s" is clicked and required fields are filled',
     async (label) => {
       const user = userEvent.setup();
       const writeText = vi
@@ -55,9 +55,40 @@ describe('TemplatePage', () => {
         .mockResolvedValue(undefined);
       renderAt('/tos');
 
+      await user.type(
+        screen.getByLabelText('Company / Website Name'),
+        'Acme Inc.',
+      );
+      await user.type(
+        screen.getByLabelText('Website URL'),
+        'https://example.com',
+      );
+      await user.type(
+        screen.getByLabelText('Contact Email'),
+        'contact@example.com',
+      );
+      await user.type(screen.getByLabelText('Effective Date'), '2024-01-01');
+      await user.type(
+        screen.getByLabelText('Governing Law'),
+        'State of Delaware',
+      );
       await user.click(screen.getByRole('button', { name: label }));
 
       expect(writeText).toHaveBeenCalled();
     },
   );
+
+  it('does not copy when required fields are empty', async () => {
+    const user = userEvent.setup();
+    const writeText = vi
+      .spyOn(navigator.clipboard, 'writeText')
+      .mockResolvedValue(undefined);
+    renderAt('/tos');
+
+    await user.click(
+      screen.getByRole('button', { name: 'Copy as Plain Text' }),
+    );
+
+    expect(writeText).not.toHaveBeenCalled();
+  });
 });

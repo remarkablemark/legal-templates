@@ -5,12 +5,18 @@ const COPIED_FEEDBACK_DURATION_MS = 2000;
 export interface CopyButtonProps {
   label: string;
   getText: () => string;
+  /** Optional check run before copying; if it returns `false`, the copy is aborted. */
+  validate?: () => boolean;
 }
 
-export function CopyButton({ label, getText }: CopyButtonProps) {
+export function CopyButton({ label, getText, validate }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleClick() {
+    if (validate && !validate()) {
+      return;
+    }
+
     await navigator.clipboard.writeText(getText());
     setCopied(true);
     setTimeout(() => {

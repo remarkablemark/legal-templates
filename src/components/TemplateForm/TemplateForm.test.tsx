@@ -70,6 +70,13 @@ describe('TemplateForm', () => {
     );
   });
 
+  it('autofocuses only the first field', () => {
+    setup({ companyName: '' });
+
+    expect(screen.getByLabelText('Company / Website Name')).toHaveFocus();
+    expect(screen.getByLabelText('Effective Date')).not.toHaveFocus();
+  });
+
   it('renders a labeled date input', () => {
     setup({ effectiveDate: '' });
 

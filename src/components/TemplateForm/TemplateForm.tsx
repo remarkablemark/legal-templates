@@ -24,7 +24,9 @@ export function TemplateForm({ fields, values, onChange }: TemplateFormProps) {
 
   return (
     <form className="flex flex-col gap-4" aria-label="Document details">
-      {fields.map((field) => {
+      {fields.map((field, index) => {
+        const autoFocus = index === 0;
+
         if (field.type === 'checkbox') {
           return (
             <label
@@ -32,6 +34,7 @@ export function TemplateForm({ fields, values, onChange }: TemplateFormProps) {
               className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
             >
               <input
+                autoFocus={autoFocus}
                 checked={Boolean(values[field.name])}
                 className="size-4 rounded border-slate-300 dark:border-slate-700"
                 onChange={handleChange(field)}
@@ -50,6 +53,7 @@ export function TemplateForm({ fields, values, onChange }: TemplateFormProps) {
             >
               {field.label}
               <select
+                autoFocus={autoFocus}
                 className={inputClassName}
                 onChange={handleChange(field)}
                 required={field.required}
@@ -72,6 +76,7 @@ export function TemplateForm({ fields, values, onChange }: TemplateFormProps) {
           >
             {field.label}
             <input
+              autoFocus={autoFocus}
               className={inputClassName}
               onChange={handleChange(field)}
               placeholder={field.placeholder}

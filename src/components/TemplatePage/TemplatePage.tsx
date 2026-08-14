@@ -2,7 +2,10 @@ import { useRef, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { CopyButton } from 'src/components/CopyButton';
 import { DocumentPreview } from 'src/components/DocumentPreview';
-import { FormPreviewLayout } from 'src/components/FormPreviewLayout';
+import {
+  FormPreviewLayout,
+  type FormPreviewLayoutHandle,
+} from 'src/components/FormPreviewLayout';
 import { TemplateForm } from 'src/components/TemplateForm';
 import { getTemplate } from 'src/templates';
 import type { FieldValues, TemplateConfig } from 'src/types/template.types';
@@ -28,6 +31,7 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
     getDefaultValues(template.fields),
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const formPreviewLayoutRef = useRef<FormPreviewLayoutHandle>(null);
 
   function handleChange(name: string, value: boolean | string) {
     setValues((previous) => ({ ...previous, [name]: value }));
@@ -35,7 +39,19 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
 
   function validate() {
     /* v8 ignore next -- @preserve: formRef is always attached once mounted */
-    return formRef.current?.reportValidity() ?? true;
+    const isValid = formRef.current?.checkValidity() ?? true;
+
+    if (!isValid) {
+      // On mobile the invalid field may be on a hidden tab, where
+      // reportValidity() would throw. Switch to the Form tab first, then
+      // report validity once the field is visible and focusable.
+      formPreviewLayoutRef.current?.switchToFormTab();
+      requestAnimationFrame(() => {
+        formRef.current?.reportValidity();
+      });
+    }
+
+    return isValid;
   }
 
   const interpolatedMarkdown = interpolate(template.markdown, values);
@@ -52,6 +68,7 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
       <h1 className="mb-6 text-3xl font-bold">{template.title}</h1>
 
       <FormPreviewLayout
+        ref={formPreviewLayoutRef}
         form={
           <TemplateForm
             ref={formRef}

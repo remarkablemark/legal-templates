@@ -1,10 +1,16 @@
-import { useId, useState } from 'react';
+import { useId, useImperativeHandle, useState } from 'react';
 
 type Tab = 'form' | 'preview';
+
+export interface FormPreviewLayoutHandle {
+  /** Switches to the Form tab, e.g. to reveal an invalid field on mobile. */
+  switchToFormTab: () => void;
+}
 
 export interface FormPreviewLayoutProps {
   form: React.ReactNode;
   preview: React.ReactNode;
+  ref?: React.Ref<FormPreviewLayoutHandle>;
 }
 
 const tabClassName = (isActive: boolean) =>
@@ -14,9 +20,20 @@ const tabClassName = (isActive: boolean) =>
       : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
   }`;
 
-export function FormPreviewLayout({ form, preview }: FormPreviewLayoutProps) {
+export function FormPreviewLayout({
+  form,
+  preview,
+  ref,
+}: FormPreviewLayoutProps) {
   const [activeTab, setActiveTab] = useState<Tab>('form');
   const id = useId();
+
+  useImperativeHandle(ref, () => ({
+    switchToFormTab: () => {
+      setActiveTab('form');
+    },
+  }));
+
   const formTabId = `${id}-form-tab`;
   const formPanelId = `${id}-form-panel`;
   const previewTabId = `${id}-preview-tab`;

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
@@ -90,5 +90,25 @@ describe('TemplatePage', () => {
     );
 
     expect(writeText).not.toHaveBeenCalled();
+  });
+
+  it('switches back to the form tab instead of throwing when copying with an invalid field hidden on the preview tab', async () => {
+    const user = userEvent.setup();
+    renderAt('/tos');
+
+    await user.click(screen.getByRole('tab', { name: 'Preview' }));
+    expect(screen.getByRole('tabpanel', { name: 'Form' })).toHaveClass(
+      'hidden',
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Copy as Plain Text' }),
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('tabpanel', { name: 'Form' })).not.toHaveClass(
+        'hidden',
+      );
+    });
   });
 });

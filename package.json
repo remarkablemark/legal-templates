@@ -17,6 +17,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "4.3.3",
     "marked": "18.0.9",
+    "mustache": "4.2.0",
     "postcss": "8.5.26",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -31,6 +32,7 @@
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.4",
+    "@types/mustache": "4.2.6",
     "@types/node": "26.2.0",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",

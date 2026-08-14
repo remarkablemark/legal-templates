@@ -62,7 +62,6 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
         }
         preview={
           <div className="flex flex-col gap-4">
-            <DocumentPreview markdown={interpolatedMarkdown} />
             <div className="flex flex-wrap gap-2">
               <CopyButton
                 getText={() => markdownToPlainText(interpolatedMarkdown)}
@@ -80,6 +79,7 @@ function TemplateEditor({ template }: { template: TemplateConfig }) {
                 validate={validate}
               />
             </div>
+            <DocumentPreview markdown={interpolatedMarkdown} />
           </div>
         }
       />

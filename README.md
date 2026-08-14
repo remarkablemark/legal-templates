@@ -1,18 +1,20 @@
-# vite-react-tailwind-template
+# legal-templates
 
-[![build](https://github.com/remarkablemark/vite-react-tailwind-template/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablemark/vite-react-tailwind-template/actions/workflows/build.yml)
-[![test](https://github.com/remarkablemark/vite-react-tailwind-template/actions/workflows/test.yml/badge.svg)](https://github.com/remarkablemark/vite-react-tailwind-template/actions/workflows/test.yml)
+[![build](https://github.com/remarkablemark/legal-templates/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablemark/legal-templates/actions/workflows/build.yml)
+[![test](https://github.com/remarkablemark/legal-templates/actions/workflows/test.yml/badge.svg)](https://github.com/remarkablemark/legal-templates/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/remarkablemark/legal-templates/graph/badge.svg?token=mlUjqBLMkr)](https://codecov.io/gh/remarkablemark/legal-templates)
 
-⚡ Vite React Tailwind Template
+📜 Generate documents from legal templates:
+
+- [Legal Templates](https://remarkablemark.org/legal-templates/)
 
 ## Install
 
 Clone the repository:
 
 ```sh
-git clone https://github.com/remarkablemark/vite-react-tailwind-template.git
-cd vite-react-tailwind-template
+git clone https://github.com/remarkablemark/legal-templates.git
+cd legal-templates
 ```
 
 Install the dependencies:

@@ -61,4 +61,21 @@ describe('interpolate', () => {
       'Before.\n\n## Digital Goods\n\nNon-refundable.\n\nAfter.',
     );
   });
+
+  it('renumbers headings sequentially when a middle section is hidden', () => {
+    const markdown = [
+      '## 1. First',
+      '{{#showSecond}}',
+      '## 2. Second',
+      '{{/showSecond}}',
+      '## 3. Third',
+    ].join('\n');
+
+    expect(interpolate(markdown, { showSecond: false })).toBe(
+      '## 1. First\n## 2. Third',
+    );
+    expect(interpolate(markdown, { showSecond: true })).toBe(
+      '## 1. First\n## 2. Second\n## 3. Third',
+    );
+  });
 });

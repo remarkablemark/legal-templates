@@ -17,9 +17,22 @@ function buildView(values: FieldValues): Record<string, boolean | string> {
 }
 
 /**
+ * Renumbers `## N. Heading` sections sequentially so hidden conditional
+ * sections don't leave gaps in the numbering (e.g. 1, 3, 4 becomes 1, 2, 3).
+ */
+function renumberHeadings(markdown: string): string {
+  let sectionNumber = 0;
+
+  return markdown.replace(
+    /^## \d+\./gm,
+    () => `## ${String(++sectionNumber)}.`,
+  );
+}
+
+/**
  * Interpolates `{{placeholder}}` tokens and `{{#field}}...{{/field}}`
  * conditional sections in the given Markdown template using Mustache.
  */
 export function interpolate(markdown: string, values: FieldValues): string {
-  return Mustache.render(markdown, buildView(values));
+  return renumberHeadings(Mustache.render(markdown, buildView(values)));
 }

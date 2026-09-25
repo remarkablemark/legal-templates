@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.3.3",
-    "marked": "18.0.13",
+    "marked": "18.0.14",
     "mustache": "4.2.0",
     "postcss": "8.5.28",
     "react": "19.3.0",

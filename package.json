@@ -18,7 +18,7 @@
     "@tailwindcss/postcss": "4.3.3",
     "marked": "18.1.0",
     "mustache": "4.2.0",
-    "postcss": "8.5.28",
+    "postcss": "8.5.29",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-router-dom": "7.18.4",
